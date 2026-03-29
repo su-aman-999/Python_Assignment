@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Built-in Functions — Master Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --surface: #10141c;
+    --surface2: #161b27;
+    --border: #1e2535;
+    --accent: #f7c948;
+    --accent2: #4af0a8;
+    --accent3: #7b9cff;
+    --accent4: #ff6b6b;
+    --accent5: #c77dff;
+    --text: #e2e8f0;
+    --text-muted: #7a8ba8;
+    --code-bg: #0d1117;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0d1117 0%, #0a0c10 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 32px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(247,201,72,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header h1 {
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    background: linear-gradient(90deg, var(--accent) 0%, #fde68a 50%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+  .header p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+  .badge-row {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+    margin-top: 20px;
+  }
+  .badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    border: 1px solid;
+  }
+  .badge-yellow { background: rgba(247,201,72,0.1); color: var(--accent); border-color: rgba(247,201,72,0.25); }
+  .badge-green  { background: rgba(74,240,168,0.08); color: var(--accent2); border-color: rgba(74,240,168,0.2); }
+  .badge-blue   { background: rgba(123,156,255,0.08); color: var(--accent3); border-color: rgba(123,156,255,0.2); }
+  .badge-red    { background: rgba(255,107,107,0.08); color: var(--accent4); border-color: rgba(255,107,107,0.2); }
+  .badge-purple { background: rgba(199,125,255,0.08); color: var(--accent5); border-color: rgba(199,125,255,0.2); }
+
+  /* LAYOUT */
+  .container { max-width: 1600px; margin: 0 auto; padding: 32px 20px 60px; }
+
+  /* SECTION */
+  .section { margin-bottom: 48px; }
+  .section-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-icon {
+    font-size: 1.4rem;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px;
+    background: var(--surface2);
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.03em;
+  }
+  .section-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    background: var(--surface2);
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: auto;
+  }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    min-width: 900px;
+  }
+  thead tr {
+    background: var(--surface2);
+    border-bottom: 2px solid var(--border);
+  }
+  th {
+    padding: 12px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: left;
+    white-space: nowrap;
+  }
+  th:first-child { color: var(--accent); }
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  tbody tr:hover { background: rgba(255,255,255,0.025); }
+  tbody tr:last-child { border-bottom: none; }
+  td {
+    padding: 14px 16px;
+    vertical-align: top;
+    line-height: 1.55;
+  }
+
+  /* Function name cell */
+  .fn-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: var(--accent);
+    white-space: nowrap;
+    background: rgba(247,201,72,0.05);
+    padding: 3px 10px;
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  /* Definition */
+  .def-text { color: var(--text); font-size: 0.84rem; }
+  .def-text strong { color: var(--accent2); font-weight: 600; }
+  .def-text em { color: var(--accent3); font-style: normal; font-weight: 600; }
+
+  /* Code blocks */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    color: #c9d1d9;
+    white-space: pre;
+  }
+  .kw  { color: #ff7b72; }
+  .fn  { color: #d2a8ff; }
+  .st  { color: #a5d6ff; }
+  .cm  { color: #6e7681; }
+  .nm  { color: #ffa657; }
+  .op  { color: #79c0ff; }
+
+  /* Output */
+  .output-block {
+    background: #0d1f12;
+    border: 1px solid #1a3a22;
+    border-left: 3px solid var(--accent2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent2);
+    white-space: pre-wrap;
+    line-height: 1.6;
+  }
+
+  /* Use case */
+  .usecase {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .usecase strong { color: var(--accent3); }
+
+  /* Column widths */
+  .col-fn   { width: 100px; }
+  .col-def  { width: 22%; }
+  .col-ex   { width: 28%; }
+  .col-out  { width: 18%; }
+  .col-uc   { width: 20%; }
+
+  /* TOP 10 SECTION */
+  .top10 {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px;
+    margin-top: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .top10::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 250px; height: 250px;
+    background: radial-gradient(ellipse, rgba(247,201,72,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .top10-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+  .top10-subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+  }
+  .top10-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  .top10-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .top10-card:hover {
+    border-color: rgba(247,201,72,0.35);
+    transform: translateY(-2px);
+  }
+  .rank {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent);
+    opacity: 0.6;
+    min-width: 28px;
+    line-height: 1.3;
+  }
+  .top10-card-body { flex: 1; }
+  .top10-fn {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .top10-reason {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .top10-reason strong { color: var(--accent2); }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🐍 Python Built-in Functions</h1>
+  <p>Master Reference — Interview + Exam + Practical Coding</p>
+  <div class="badge-row">
+    <span class="badge badge-yellow">🔥 Core</span>
+    <span class="badge badge-green">🔄 Conversion</span>
+    <span class="badge badge-blue">⚡ Iterables</span>
+    <span class="badge badge-red">🔤 Encoding</span>
+    <span class="badge badge-purple">🧠 OOP</span>
+    <span class="badge badge-yellow">⚙️ Attributes</span>
+    <span class="badge badge-green">⚠️ Execution</span>
+    <span class="badge badge-blue">🧩 Types</span>
+    <span class="badge badge-red">🛠 Utility</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ======================== CORE ======================== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">🔥</div>
+    <span class="section-title">Core Functions</span>
+    <span class="section-count">8 functions</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-fn">Function</th>
+          <th class="col-def">In-depth Definition</th>
+          <th class="col-ex">Advanced Example</th>
+          <th class="col-out">Output</th>
+          <th class="col-uc">Real-world Use Case</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td><span class="fn-name">abs()</span></td>
+          <td class="def-text">Ek number ka <strong>absolute value</strong> deta hai — matlab negative sign hata do. Internally ye number ka <em>__abs__()</em> dunder method call karta hai. Complex numbers pe bhi kaam karta hai (magnitude nikalke).</td>
+          <td><pre><span class="cm"># Gradient clipping in neural nets</span>
+<span class="nm">grads</span> = [-<span class="nm">2.5</span>, <span class="nm">0.8</span>, -<span class="nm">0.3</span>, <span class="nm">3.1</span>]
+<span class="nm">clipped</span> = [<span class="fn">max</span>(-<span class="nm">1</span>, <span class="fn">min</span>(<span class="nm">1</span>, g)) <span class="kw">if</span> <span class="fn">abs</span>(g) > <span class="nm">1</span>
+           <span class="kw">else</span> g <span class="kw">for</span> g <span class="kw">in</span> grads]
+<span class="fn">print</span>(clipped)</pre></td>
+          <td><div class="output-block">[-1, 0.8, -0.3, 1]</div></td>
+          <td class="usecase"><strong>ML/AI:</strong> Gradient clipping, distance calculation, financial P&L computation jahan sirf magnitude matter kare.</td>
+        </tr>
+
+        <tr>
+          <td><span class="fn-name">all()</span></td>
+          <td class="def-text">Iterable ke <strong>har element ko bool mein convert karta hai</strong> — ek bhi False mila toh turant False return karta hai (short-circuit). Generator pe kaam karta hai bina pura evaluate kiye.</td>
+          <td><pre><span class="nm">data</span> = {<span class="st">"name"</span>: <span class="st">"Rahul"</span>, <span class="st">"age"</span>: <span class="nm">25</span>,
+         <span class="st">"email"</span>: <span class="st">"r@x.com"</span>}
+<span class="nm">required</span> = [<span class="st">"name"</span>, <span class="st">"age"</span>, <span class="st">"email"</span>, <span class="st">"phone"</span>]
+<span class="nm">valid</span> = <span class="fn">all</span>(data.get(k) <span class="kw">for</span> k <span class="kw">in</span> required)
+<span class="fn">print</span>(valid)</pre></td>
+          <td><div class="output-block">False</div></td>
+          <td class="usecase"><strong>Form validation:</strong> Check karo ki API response mein saare required fields present hain ya nahi. Database insert se pehle constraints verify karna.</td>
+        </tr>
+
+        <tr>
+          <td><span class="fn-name">any()</span></td>
+          <td class="def-text">Iterable mein <strong>koi bhi ek True mila</strong> toh True return karta hai — bhi short-circuit. Ye basically OR operator ka iterable version hai. Empty iterable pe False deta hai.</td>
+          <td><pre><span class="nm">logs</span> = [<span class="st">"INFO: started"</span>, <span class="st">"ERROR: timeout"</span>,
+         <span class="st">"INFO: retry"</span>]
+<span class="nm">has_error</span> = <span class="fn">any</span>(<span class="st">"ERROR"</span> <span class="kw">in</span> line 
+              <span class="kw">for</span> line <span class="kw">in</span> logs)
+<span class="fn">print</span>(has_error)</pre></td>
+          <td><div class="output-block">True</div></td>
+          <td class="usecase"><strong>Log monitoring:</strong> Production logs mein error detect karna. Permission systems mein check karna ki user ke paas koi bhi required role hai ya nahi.</td>
+        </tr>
+
+        <tr>
+          <td><span class="fn-name">bool()</span></td>
+          <td class="def-text">Kisi bhi object ko <strong>True/False mein convert karta hai</strong> — object ka <em>__bool__()</em> call hota hai, ya agar woh nahi hai toh <em>__len__()</em>. 0, None, "", [], {} — sab False hain (falsy values).</td>
+          <td><pre><span class="kw">class</span> <span class="fn">Stack</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self):
+        self.items = []
+    <span class="kw">def</span> <span class="fn">push</span>(self, v): self.items.append(v)
+    <span class="kw">def</span> <span class="fn">__bool__</span>(self):
+        <span class="kw">return</span> <span class="fn">bool</span>(self.items)
+
+s = <span class="fn">Stack</span>()
+<span class="fn">print</span>(<span class="fn">bool</span>(s))
+s.<span class="fn">push</span>(<span class="nm">1</span>)
+<span class="fn">print</span>(<span class="fn">bool</span>(s))</pre></td>
+          <td><div class="output-block">False
+True</div></td>
+          <td class="usecase"><strong>Custom containers:</strong> Apne data structures mein truthiness define karna. Empty queue, stack, ya buffer ko if-condition mein directly use karna.</td>
+        </tr>
+
+        <tr>
+          <td><span class="fn-name">len()</span></td>
+          <td class="def-text">Object ka <strong>size/length return karta hai</strong> — internally <em>__len__()</em> call hota hai. O(1) hota hai most built-in types ke liye (list, dict, str) kyunki length cached hoti hai, recalculate nahi hoti.</td>
+          <td><pre><span class="nm">matrix</span> = [[<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>],[<span class="nm">4</span>,<span class="nm">5</span>,<span class="nm">6</span>],[<span class="nm">7</span>,<span class="nm">8</span>,<span class="nm">9</span>]]
+<span class="nm">rows</span>, <span class="nm">cols</span> = <span class="fn">len</span>(matrix), <span class="fn">len</span>(matrix[<span class="nm">0</span>])
+<span class="nm">flat</span> = [matrix[i][j]
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(rows)
+        <span class="kw">for</span> j <span class="kw">in</span> <span class="fn">range</span>(cols)]
+<span class="fn">print</span>(<span class="nm">rows</span>, <span class="nm">cols</span>, flat)</pre></td>
+          <td><div class="output-block">3 3 [1,2,3,4,
+5,6,7,8,9]</div></td>
+          <td class="usecase"><strong>Matrix operations:</strong> 2D data processing, pagination (total items / page size), string truncation checks, input validation.</td>
+        </tr>
+
+        <tr>
+          <td><span class="fn-name">sum()</span></td>
+          <td class="def-text">Iterable ke elements ko <strong>left-to-right add karta hai</strong>, starting value default 0 hai. <em>start</em> parameter se lists/strings bhi concatenate kar sakte ho. Generator ke saath memory-efficient hai.</td>
+          <td><pre><span class="nm">transactions</span> = [
+    {<span class="st">"amt"</span>: <span class="nm">1500</span>, <span class="st">"type"</span>: <span class="st">"credit"</span>},
+    {<span class="st">"amt"</span>: <span class="nm">200</span>,  <span class="st">"type"</span>: <span class="st">"debit"</span>},
+    {<span class="st">"amt"</span>: <span class="nm">800</span>,  <span class="st">"type"</span>: <span class="st">"credit"</span>},
+]
+<span class="nm">net</span> = <span class="fn">sum</span>(
+    t[<span class="st">"amt"</span>] * (<span class="nm">1</span> <span class="kw">if</span> t[<span class="st">"type"</span>]==<span class="st">"credit"</span> <span class="kw">else</span> -<span class="nm">1</span>)
+    <span class="kw">for</span> t <span class="kw">in</span> transactions
+)
+<span class="fn">print</span>(net)</pre></td>
+          <td><div class="output-block">2100</div></td>
+          <td class="usecase"><strong>Banking/Finance:</strong> Net balance calculation, invoice totals, aggregating metrics from records. NumPy nahi chahiye simple sums ke liye.</td>
+        </tr>
+
+        <tr>
+          <td><span class="fn-name">max()</span></td>
+          <td class="def-text">Iterable ka <strong>sabse bada element</strong> dhundta hai — internally comparison ke liye <em>__gt__</em> use karta hai. <em>key</em> parameter se custom sorting logic laga sakte ho bina data change kiye.</td>
+          <td><pre><span class="nm">students</span> = [
+    {<span class="st">"name"</span>:<span class="st">"Priya"</span>, <span class="st">"cgpa"</span>:<span class="nm">8.9</span>, <span class="st">"yr"</span>:<span class="nm">3</span>},
+    {<span class="st">"name"</span>:<span class="st">"Amit"</span>, <span class="st">"cgpa"</span>:<span class="nm">9.2</span>, <span class="st">"yr"</span>:<span class="nm">2</span>},
+    {<span class="st">"name"</span>:<span class="st">"Neha"</span>, <span class="st">"cgpa"</span>:<span class="nm">9.2</span>, <span class="st">"yr"</span>:<span class="nm">4</span>},
+]
+<span class="nm">top</span> = <span class="fn">max</span>(students,
+         key=<span class="kw">lambda</span> s: (s[<span class="st">"cgpa"</span>], s[<span class="st">"yr"</span>]))
+<span class="fn">print</span>(top[<span class="st">"name"</span>])</pre></td>
+          <td><div class="output-block">Neha</div></td>
+          <td class="usecase"><strong>Leaderboards:</strong> Multi-criteria ranking (same CGPA toh senior preferred), finding peak load time, highest bid in auction system.</td>
+        </tr>
+
+        <tr>
+          <td><span class="fn-name">min()</span></td>
+          <td class="def-text">Iterable ka <strong>sabse chota element</strong> dhundta hai. max() ka mirror image hai. Key function ke saath complex objects mein minimum dhundna easy ho jaata hai.</td>
+          <td><pre><span class="nm">servers</span> = {
+    <span class="st">"s1"</span>: <span class="nm">75</span>, <span class="st">"s2"</span>: <span class="nm">45</span>,
+    <span class="st">"s3"</span>: <span class="nm">90</span>, <span class="st">"s4"</span>: <span class="nm">30</span>
+}
+<span class="cm"># Least loaded server</span>
+<span class="nm">target</span> = <span class="fn">min</span>(servers, key=servers.get)
+<span class="fn">print</span>(<span class="nm">target</span>, servers[target])</pre></td>
+          <td><div class="output-block">s4 30</div></td>
+          <td class="usecase"><strong>Load balancing:</strong> Least-busy server ko request route karna. Shortest path in graph, cheapest option in pricing engine.</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ======================== CONVERSION ======================== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">🔄</div>
+    <span class="section-title">Conversion Functions</span>
+    <span class="section-count">7 functions</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-fn">Function</th>
+          <th class="col-def">In-depth Definition</th>
+          <th class="col-ex">Advanced Example</th>
+          <th class="col-out">Output</th>
+          <th class="col-uc">Real-world Use Case</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td><span class="fn-name">int()</span></td>
+          <td class="def-text">String ya float ko <strong>integer mein convert karta hai</strong>. <em>base</em> parameter se binary (2), hex (16), octal (8) string ko bhi integer mein convert kar sakte ho. Truncation hoti hai, rounding nahi.</td>
+          <td><pre><span class="cm"># Parse hex color to RGB</span>
+<span class="nm">hex_color</span> = <span class="st">"#FF5733"</span>
+r = <span class="fn">int</span>(hex_color[<span class="nm">1</span>:<span class="nm">3</span>], <span class="nm">16</span>)
+g = <span class="fn">int</span>(hex_color[<span class="nm">3</span>:<span class="nm">5</span>], <span class="nm">16</span>)
+b = <span class="fn">int</span>(hex_color[<span class="nm">5</span>:<span class="nm">7</span>], <span class="nm">16</span>)
+<span class="fn">print</span>(<span class="nm">r</span>, <span class="nm">g</span>, <span class="nm">b</span>)</pre></td>
+          <td><div class="output-block">255 87 51</div></td>
+          <td class="usecase"><strong>Color processing:</strong> CSS hex to RGB conversion. Network packet parsing, configuration file reading jahan values strings mein hoti hain.</td>
+        </tr>
+
+        <tr>
+          <td><span class="fn-name">float()</span></td>
+          <td class="def-text">String ya int ko <strong>IEEE 754 double-precision float mein convert karta hai</strong>. "inf", "-inf", "nan" strings bhi accept karta hai. Precision issues hoti hain (0.1 + 0.2 ≠ 0.3).</td>
+          <td><pre><span class="nm">prices</span> = [<span class="st">"12.5"</span>, <span class="st">"nan"</span>, <span class="st">"8.99"</span>, <span class="st">"inf"</span>]
+<span class="kw">import</span> math
+<span class="nm">valid</span> = [<span class="fn">float</span>(p) <span class="kw">for</span> p <span class="kw">in</span> prices
+         <span class="kw">if not</span> math.<span class="fn">isnan</span>(<span class="fn">float</span>(p))
+         <span class="kw">and not</span> math.<span class="fn">isinf</span>(<span class="fn">float</span>(p))]
+<span class="fn">print</span>(valid)</pre></td>
+          <td><div class="output-block">[12.5, 8.99]</div></td>
+          <td class="usecase"><strong>Data cleaning:</strong> CSV se prices parse karte waqt NaN/Inf values filter karna. Sensor data processing mein invalid readings hataana.</td>
+        </tr>
+
+        <tr>
+          <td><span class="fn-name">str()</span></td>
+          <td class="def-text">Kisi bhi object ko <strong>human-readable string mein convert karta hai</strong> — object ka <em>__str__()</em> call hota hai. repr() se different hai — ye user ke liye hai, woh developer ke liye. Custom classes mein override kar sakte ho.</td>
+          <td><pre><span class="kw">class</span> <span class="fn">Money</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, amt, cur):
+        self.amt, self.cur = amt, cur
+    <span class="kw">def</span> <span class="fn">__str__</span>(self):
+        <span class="kw">return</span> <span class="nm">f</span><span class="st">"{self.cur} {self.amt:,.2f}"</span>
+
+m = <span class="fn">Money</span>(<span class="nm">125000</span>, <span class="st">"₹"</span>)
+<span class="fn">print</span>(<span class="fn">str</span>(m))</pre></td>
+          <td><div class="output-block">₹ 1,25,000.00</div></td>
+          <td class="usecase"><strong>Logging/Display:</strong> Custom objects ko print-friendly banana. API responses build karna, user-facing error messages format karna.</td>
+        </tr>
+
+        <tr>
+          <td><span class="fn-name">list()</span></td>
+          <td class="def-text">Kisi bhi <strong>iterable ko list mein convert karta hai</strong> — ek baar iterate karta hai aur sab elements ko list mein store karta hai. Generator ko exhaust kar deta hai. Shallow copy banaata hai.</td>
+          <td><pre><span class="cm"># Sliding window using deque→list</span>
+<span class="kw">from</span> collections <span class="kw">import</span> deque
+<span class="nm">stream</span> = <span class="fn">iter</span>(<span class="fn">range</span>(<span class="nm">10</span>))
+<span class="nm">window</span> = deque(<span class="fn">list</span>(<span class="nm">x</span> <span class="kw">for</span> x, _ <span class="kw">in</span>
+               <span class="fn">zip</span>(stream, <span class="fn">range</span>(<span class="nm">3</span>))), <span class="nm">3</span>)
+<span class="fn">print</span>(<span class="fn">list</span>(window))</pre></td>
+          <td><div class="output-block">[0, 1, 2]</div></td>
+          <td class="usecase"><strong>Stream processing:</strong> Generator output ko reusable list mein convert karna. Set/tuple operations ke baad list chahiye toh use karo.</td>
+        </tr>
+
+        <tr>
+          <td><span class="fn-name">tuple()</span></td>
+          <td class="def-text">Iterable ko <strong>immutable sequence mein convert karta hai</strong>. Tuples hashable hain (if elements bhi hashable hain), isliye dict keys ya set elements ban sakte hain. Memory mein list se thoda efficient hain.</td>
+          <td><pre><span class="cm"># Use tuple as dict key (coordinate map)</span>
+<span class="nm">grid</span> = {}
+<span class="nm">coords</span> = [[<span class="nm">0</span>,<span class="nm">0</span>], [<span class="nm">1</span>,<span class="nm">2</span>], [<span class="nm">3</span>,<span class="nm">4</span>]]
+<span class="nm">vals</span>   = [<span class="st">"start"</span>, <span class="st">"mid"</span>, <span class="st">"end"</span>]
+<span class="kw">for</span> c, v <span class="kw">in</span> <span class="fn">zip</span>(coords, vals):
+    grid[<span class="fn">tuple</span>(c)] = v
+<span class="fn">print</span>(grid[(<span class="nm">1</span>,<span class="nm">2</span>)])</pre></td>
+          <td><div class="output-block">mid</div></td>
+          <td class="usecase"><strong>Game dev / GIS:</strong> Coordinates ko dict keys banana. Memoization mein function arguments ko hashable banana. Named constants.</td>
+        </tr>
+
+        <tr>
+          <td><span class="fn-name">set()</span></td>
+          <td class="def-text">Iterable se <strong>unique elements ka unordered collection</strong> banata hai — internally hash table use hota hai. Lookup O(1) hai. Duplicate automatically remove ho jaate hain. Mathematical set operations support karta hai.</td>
+          <td><pre><span class="nm">user_tags</span> = {<span class="st">"python"</span>,<span class="st">"ml"</span>,<span class="st">"sql"</span>}
+<span class="nm">job_req</span>   = {<span class="st">"python"</span>,<span class="st">"django"</span>,<span class="st">"sql"</span>}
+<span class="nm">matched</span>  = user_tags & job_req
+<span class="nm">missing</span>  = job_req - user_tags
+<span class="fn">print</span>(<span class="st">"Match:"</span>, matched)
+<span class="fn">print</span>(<span class="st">"Gap:"</span>, missing)</pre></td>
+          <td><div class="output-block">Match: {'python','sql'}
+Gap: {'django'}</div></td>
+          <td class="usecase"><strong>Job matching:</strong> Skill gap analysis, deduplication of records, finding common friends/followers, tag-based recommendation.</td>
+        </tr>
+
+        <tr>
+          <td><span class="fn-name">dict()</span></td>
+          <td class="def-text">Key-value pairs se <strong>dictionary banata hai</strong>. Keyword arguments se, iterable of pairs se, ya existing dict se bana sakte ho. Python 3.7+ se insertion order maintain hoti hai. Internally hash table hai.</td>
+          <td><pre><span class="nm">keys</span>   = [<span class="st">"id"</span>, <span class="st">"name"</span>, <span class="st">"score"</span>]
+<span class="nm">values</span> = [<span class="nm">42</span>, <span class="st">"Kavya"</span>, <span class="nm">98.5</span>]
+<span class="nm">record</span> = <span class="fn">dict</span>(<span class="fn">zip</span>(keys, values))
+<span class="nm">record</span>[<span class="st">"grade"</span>] = <span class="st">"A+"</span>
+<span class="fn">print</span>(record)</pre></td>
+          <td><div class="output-block">{'id': 42, 'name': 'Kavya',
+'score': 98.5, 'grade': 'A+'}</div></td>
+          <td class="usecase"><strong>CSV/DB parsing:</strong> Column names + row values ko records mein convert karna. Config files load karna, JSON responses reformat karna.</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ======================== ITERABLE ======================== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">⚡</div>
+    <span class="section-title">Iterable / Loop Functions</span>
+    <span class="section-count">7 functions</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-fn">Function</th>
+          <th class="col-def">In-depth Definition</th>
+          <th class="col-ex">Advanced Example</th>
+          <th class="col-out">Output</th>
+          <th class="col-uc">Real-world Use Case</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td><span class="fn-name">range()</span></td>
+          <td class="def-text"><strong>Lazy sequence</strong> generate karta hai (range object) — memory mein sirf start, stop, step store hoti hai, saari values nahi. Isliye range(10**9) bhi fast hai. Sliceable aur indexable hai.</td>
+          <td><pre><span class="cm"># Batch processing in chunks</span>
+<span class="nm">total</span> = <span class="nm">10000</span>
+<span class="nm">batch</span> = <span class="nm">500</span>
+<span class="nm">batches</span> = [<span class="fn">list</span>(<span class="fn">range</span>(i, <span class="fn">min</span>(i+batch, total)))
+           <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">0</span>, total, batch)]
+<span class="fn">print</span>(<span class="fn">len</span>(batches), batches[<span class="nm">0</span>][:<span class="nm">3</span>])</pre></td>
+          <td><div class="output-block">20 [0, 1, 2]</div></td>
+          <td class="usecase"><strong>Bulk operations:</strong> Database records ko batches mein process karna, pagination implement karna, bulk API calls throttle karna.</td>
+        </tr>
+
+        <tr>
+          <td><span class="fn-name">enumerate()</span></td>
+          <td class="def-text">Iterable ko <strong>(index, value) tuples ki stream</strong> mein convert karta hai. Manual counter maintain karne ki zaroorat nahi. start parameter se index kahan se shuru kare woh specify kar sakte ho.</td>
+          <td><pre><span class="nm">menu</span> = [<span class="st">"Burger"</span>, <span class="st">"Pizza"</span>, <span class="st">"Pasta"</span>]
+<span class="nm">order_map</span> = {
+    item: idx
+    <span class="kw">for</span> idx, item <span class="kw">in</span> <span class="fn">enumerate</span>(menu, start=<span class="nm">101</span>)
+}
+<span class="fn">print</span>(order_map)</pre></td>
+          <td><div class="output-block">{'Burger': 101,
+'Pizza': 102,
+'Pasta': 103}</div></td>
+          <td class="usecase"><strong>Menu/Product IDs:</strong> Auto-generate IDs starting from a number. Error messages mein line numbers show karna. Progress bars mein item count.</td>
+        </tr>
+
+        <tr>
+          <td><span class="fn-name">zip()</span></td>
+          <td class="def-text">Multiple iterables ko <strong>parallel mein iterate karta hai</strong> — element-wise tuples banata hai. Shortest iterable pe ruk jaata hai (zip_longest use karo agar sab chahiye). Lazy evaluation karta hai.</td>
+          <td><pre><span class="nm">questions</span> = [<span class="st">"q1"</span>, <span class="st">"q2"</span>, <span class="st">"q3"</span>]
+<span class="nm">answers</span>   = [<span class="st">"a1"</span>, <span class="st">"a2"</span>, <span class="st">"a3"</span>]
+<span class="nm">scores</span>    = [<span class="nm">10</span>, <span class="nm">8</span>, <span class="nm">10</span>]
+<span class="nm">qa</span> = [
+    {<span class="st">"q"</span>:q, <span class="st">"a"</span>:a, <span class="st">"s"</span>:s}
+    <span class="kw">for</span> q,a,s <span class="kw">in</span> <span class="fn">zip</span>(questions, answers, scores)
+]
+<span class="fn">print</span>(qa[<span class="nm">1</span>])</pre></td>
+          <td><div class="output-block">{'q': 'q2',
+'a': 'a2',
+'s': 8}</div></td>
+          <td class="usecase"><strong>Quiz apps, Data joining:</strong> Multiple parallel lists ko combine karna. Matrix transpose, config key-value pairing, parallel data processing.</td>
+        </tr>
+
+        <tr>
+          <td><span class="fn-name">map()</span></td>
+          <td class="def-text">Function ko <strong>har element pe apply karta hai</strong> — lazy iterator return karta hai. For loop se zyada concise aur functional style hai. Multiple iterables bhi pass kar sakte ho (function multi-arg lega).</td>
+          <td><pre><span class="nm">raw_data</span> = [<span class="st">"  Rahul  "</span>, <span class="st">"PRIYA"</span>, <span class="st">"amit"</span>]
+<span class="nm">clean</span> = <span class="fn">list</span>(<span class="fn">map</span>(
+    <span class="kw">lambda</span> s: s.<span class="fn">strip</span>().<span class="fn">title</span>(),
+    raw_data
+))
+<span class="fn">print</span>(clean)</pre></td>
+          <td><div class="output-block">['Rahul', 'Priya',
+'Amit']</div></td>
+          <td class="usecase"><strong>ETL pipelines:</strong> Data normalization, type casting multiple columns, applying transformations to records. pandas ke bina lightweight processing.</td>
+        </tr>
+
+        <tr>
+          <td><span class="fn-name">filter()</span></td>
+          <td class="def-text">Function jo <strong>True return kare unhi elements ko rakhta hai</strong> — bhi lazy iterator. None pass karo toh falsy elements filter ho jaate hain. map + filter combo powerful transformation pipeline banata hai.</td>
+          <td><pre><span class="nm">products</span> = [
+    {<span class="st">"name"</span>:<span class="st">"A"</span>, <span class="st">"stock"</span>:<span class="nm">0</span>, <span class="st">"price"</span>:<span class="nm">500</span>},
+    {<span class="st">"name"</span>:<span class="st">"B"</span>, <span class="st">"stock"</span>:<span class="nm">5</span>, <span class="st">"price"</span>:<span class="nm">300</span>},
+    {<span class="st">"name"</span>:<span class="st">"C"</span>, <span class="st">"stock"</span>:<span class="nm">0</span>, <span class="st">"price"</span>:<span class="nm">700</span>},
+]
+<span class="nm">available</span> = <span class="fn">list</span>(<span class="fn">filter</span>(
+    <span class="kw">lambda</span> p: p[<span class="st">"stock"</span>] > <span class="nm">0</span>, products
+))
+<span class="fn">print</span>(available[<span class="nm">0</span>][<span class="st">"name"</span>])</pre></td>
+          <td><div class="output-block">B</div></td>
+          <td class="usecase"><strong>E-commerce:</strong> In-stock products dikhana, active users filter karna, valid transactions nikaalna, logs se errors dhundna.</td>
+        </tr>
+
+        <tr>
+          <td><span class="fn-name">sorted()</span></td>
+          <td class="def-text">Kisi bhi iterable ko <strong>new sorted list mein return karta hai</strong> — original modify nahi hota. Internally <em>Timsort</em> (O(n log n), stable) use hota hai. key + reverse ke saath complex sorting possible hai.</td>
+          <td><pre><span class="nm">leaderboard</span> = [
+    (<span class="st">"Arjun"</span>, <span class="nm">850</span>, <span class="nm">3</span>),
+    (<span class="st">"Sara"</span>,  <span class="nm">850</span>, <span class="nm">1</span>),
+    (<span class="st">"Dev"</span>,   <span class="nm">920</span>, <span class="nm">5</span>),
+]
+<span class="nm">ranked</span> = <span class="fn">sorted</span>(leaderboard,
+    key=<span class="kw">lambda</span> x: (-x[<span class="nm">1</span>], x[<span class="nm">2</span>]))
+<span class="fn">print</span>([r[<span class="nm">0</span>] <span class="kw">for</span> r <span class="kw">in</span> ranked])</pre></td>
+          <td><div class="output-block">['Dev', 'Sara',
+'Arjun']</div></td>
+          <td class="usecase"><strong>Rankings:</strong> Score descending, tiebreaker ascending. Employee salary sort, product price filter, event scheduling by date.</td>
+        </tr>
+
+        <tr>
+          <td><span class="fn-name">reversed()</span></td>
+          <td class="def-text">Sequence ka <strong>reverse iterator return karta hai</strong> — original modify nahi hota, aur naya list bhi nahi banata (memory efficient). Object mein <em>__reversed__()</em> ya <em>__len__</em>+<em>__getitem__</em> hona chahiye.</td>
+          <td><pre><span class="nm">history</span> = [<span class="st">"login"</span>, <span class="st">"view_item"</span>, 
+           <span class="st">"add_cart"</span>, <span class="st">"checkout"</span>]
+<span class="cm"># Show most recent actions first</span>
+<span class="nm">recent</span> = <span class="fn">list</span>(<span class="fn">reversed</span>(history))
+<span class="fn">print</span>(recent[:<span class="nm">2</span>])</pre></td>
+          <td><div class="output-block">['checkout',
+'add_cart']</div></td>
+          <td class="usecase"><strong>Activity feeds:</strong> User history reverse order mein dikhana. Undo stacks, browser back navigation, audit logs jo latest-first chahiye.</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ======================== ENCODING ======================== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">🔤</div>
+    <span class="section-title">Character / Encoding Functions</span>
+    <span class="section-count">3 functions</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-fn">Function</th>
+          <th class="col-def">In-depth Definition</th>
+          <th class="col-ex">Advanced Example</th>
+          <th class="col-out">Output</th>
+          <th class="col-uc">Real-world Use Case</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="fn-name">chr()</span></td>
+          <td class="def-text">Unicode code point (integer) ko <strong>corresponding character mein convert karta hai</strong>. 0–1,114,111 range valid hai. ord() ka reverse hai. Emoticons, special symbols, alphabets programmatically generate kar sakte ho.</td>
+          <td><pre><span class="cm"># Auto-generate A,B,C... column headers</span>
+<span class="nm">headers</span> = [<span class="fn">chr</span>(<span class="nm">65</span> + i) <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">5</span>)]
+<span class="cm"># Caesar cipher encode</span>
+<span class="nm">msg</span> = <span class="st">"hello"</span>
+<span class="nm">enc</span> = <span class="st">""</span>.<span class="fn">join</span>(<span class="fn">chr</span>((<span class="fn">ord</span>(c)-<span class="nm">97</span>+<span class="nm">3</span>)%<span class="nm">26</span>+<span class="nm">97</span>) <span class="kw">for</span> c <span class="kw">in</span> msg)
+<span class="fn">print</span>(headers, enc)</pre></td>
+          <td><div class="output-block">['A','B','C','D','E']
+khoor</div></td>
+          <td class="usecase"><strong>Spreadsheet headers, cryptography:</strong> Excel-style column names generate karna, OTP generation, Caesar cipher, Unicode art create karna.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">ord()</span></td>
+          <td class="def-text">Character ko uska <strong>Unicode code point (integer) return karta hai</strong>. chr() ka inverse. String comparison internally yehi use karta hai. Password strength, text statistics ke liye useful.</td>
+          <td><pre><span class="kw">def</span> <span class="fn">pwd_strength</span>(pwd):
+    <span class="nm">has_upper</span> = <span class="fn">any</span>(<span class="nm">65</span> <= <span class="fn">ord</span>(c) <= <span class="nm">90</span>  <span class="kw">for</span> c <span class="kw">in</span> pwd)
+    <span class="nm">has_digit</span> = <span class="fn">any</span>(<span class="nm">48</span> <= <span class="fn">ord</span>(c) <= <span class="nm">57</span>  <span class="kw">for</span> c <span class="kw">in</span> pwd)
+    <span class="kw">return</span> <span class="st">"Strong"</span> <span class="kw">if</span> has_upper <span class="kw">and</span> has_digit <span class="kw">else</span> <span class="st">"Weak"</span>
+
+<span class="fn">print</span>(<span class="fn">pwd_strength</span>(<span class="st">"Pass123"</span>))</pre></td>
+          <td><div class="output-block">Strong</div></td>
+          <td class="usecase"><strong>Security:</strong> Password validation, text encoding detection, sorting multilingual strings, checksum calculation.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">ascii()</span></td>
+          <td class="def-text">repr() jaisa hai, lekin <strong>non-ASCII characters ko \xNN, \uNNNN, \UNNNNNNNN escape sequences mein convert karta hai</strong>. Safe ASCII-only output chahiye toh use karo — JSON export, log files ke liye best.</td>
+          <td><pre><span class="nm">user_input</span> = <span class="st">"Café ☕ Naïve résumé"</span>
+<span class="nm">safe_log</span> = <span class="fn">ascii</span>(user_input)
+<span class="fn">print</span>(safe_log)</pre></td>
+          <td><div class="output-block">'Caf\xe9 \u2615
+Na\xefve r\xe9sum\xe9'</div></td>
+          <td class="usecase"><strong>Logging/Security:</strong> Non-ASCII characters log mein safely store karna. Legacy systems jo ASCII-only accept karte hain unke liye data prepare karna.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ======================== NUMBER SYSTEM ======================== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">🔢</div>
+    <span class="section-title">Number System Functions</span>
+    <span class="section-count">3 functions</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-fn">Function</th>
+          <th class="col-def">In-depth Definition</th>
+          <th class="col-ex">Advanced Example</th>
+          <th class="col-out">Output</th>
+          <th class="col-uc">Real-world Use Case</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="fn-name">bin()</span></td>
+          <td class="def-text">Integer ko <strong>"0b" prefix ke saath binary string mein convert karta hai</strong>. Negative numbers ke liye minus sign lagata hai (two's complement nahi). Bitwise operations visualize karne ke liye useful.</td>
+          <td><pre><span class="cm"># Permission bitmask (Unix style)</span>
+<span class="nm">READ</span>, <span class="nm">WRITE</span>, <span class="nm">EXEC</span> = <span class="nm">4</span>, <span class="nm">2</span>, <span class="nm">1</span>
+<span class="nm">perm</span> = <span class="nm">READ</span> | <span class="nm">WRITE</span>  <span class="cm"># 110 in binary</span>
+<span class="fn">print</span>(<span class="fn">bin</span>(perm))
+<span class="fn">print</span>(<span class="st">"Can exec:"</span>, <span class="fn">bool</span>(perm & <span class="nm">EXEC</span>))</pre></td>
+          <td><div class="output-block">0b110
+Can exec: False</div></td>
+          <td class="usecase"><strong>System programming:</strong> File permissions, feature flags via bitmask, network subnet masking, debugging low-level bit operations.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">hex()</span></td>
+          <td class="def-text">Integer ko <strong>"0x" prefix ke saath hexadecimal string mein convert karta hai</strong>. Memory addresses, color codes, cryptographic hashes — sab hex mein hote hain. Lowercase letters use karta hai (a-f).</td>
+          <td><pre><span class="cm"># Convert RGB to hex color</span>
+<span class="kw">def</span> <span class="fn">rgb_to_hex</span>(r, g, b):
+    <span class="kw">return</span> <span class="st">"#{:02X}{:02X}{:02X}"</span>.<span class="fn">format</span>(r, g, b)
+
+<span class="fn">print</span>(<span class="fn">rgb_to_hex</span>(<span class="nm">255</span>, <span class="nm">87</span>, <span class="nm">51</span>))
+<span class="fn">print</span>(<span class="fn">hex</span>(<span class="nm">255</span>))</pre></td>
+          <td><div class="output-block">#FF5733
+0xff</div></td>
+          <td class="usecase"><strong>Web/Graphics:</strong> RGB to CSS hex conversion, memory address display, cryptographic hash comparison, network MAC address formatting.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">oct()</span></td>
+          <td class="def-text">Integer ko <strong>"0o" prefix ke saath octal string mein convert karta hai</strong>. Unix file permissions (chmod 755) octal mein hoti hain isliye important hai. 3 bits = 1 octal digit.</td>
+          <td><pre><span class="cm"># Decode Unix permission octal</span>
+<span class="nm">perm</span> = <span class="nm">0o755</span>
+<span class="nm">owner</span> = (perm >> <span class="nm">6</span>) & <span class="nm">7</span>
+<span class="nm">group</span> = (perm >> <span class="nm">3</span>) & <span class="nm">7</span>
+<span class="nm">other</span> = perm & <span class="nm">7</span>
+<span class="fn">print</span>(<span class="fn">oct</span>(perm), owner, group, other)</pre></td>
+          <td><div class="output-block">0o755 7 5 5</div></td>
+          <td class="usecase"><strong>Linux/DevOps:</strong> File permission display, chmod values set karna, old-school networking protocols, assembly language interfacing.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ======================== ITERATOR ======================== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">🔁</div>
+    <span class="section-title">Iterator Functions</span>
+    <span class="section-count">2 functions</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-fn">Function</th>
+          <th class="col-def">In-depth Definition</th>
+          <th class="col-ex">Advanced Example</th>
+          <th class="col-out">Output</th>
+          <th class="col-uc">Real-world Use Case</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="fn-name">iter()</span></td>
+          <td class="def-text">Iterable se <strong>iterator object banata hai</strong> — <em>__iter__()</em> call hota hai. 2-argument form mein: callable + sentinel value — jab callable sentinel return kare toh StopIteration raise hoti hai. Lazy processing enable karta hai.</td>
+          <td><pre><span class="cm"># Read file in 1024-byte chunks</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="st">"/dev/null"</span>, <span class="st">"rb"</span>) <span class="kw">as</span> f:
+    <span class="kw">for</span> chunk <span class="kw">in</span> <span class="fn">iter</span>(<span class="kw">lambda</span>: f.<span class="fn">read</span>(<span class="nm">1024</span>), <span class="nm">b""</span>):
+        <span class="fn">print</span>(<span class="st">"chunk"</span>)
+<span class="cm"># Queue-style iteration</span>
+it = <span class="fn">iter</span>([<span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>])
+<span class="fn">print</span>(<span class="fn">next</span>(it))</pre></td>
+          <td><div class="output-block">10</div></td>
+          <td class="usecase"><strong>Stream processing:</strong> Large files memory mein load kiye bina process karna. Database cursor iteration, network packet streaming.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">next()</span></td>
+          <td class="def-text">Iterator se <strong>agla element return karta hai</strong> — <em>__next__()</em> call hota hai. StopIteration raise hoti hai agar koi element nahi. Default parameter se error avoid kar sakte ho — yeh ek powerful pattern hai.</td>
+          <td><pre><span class="nm">users</span> = [
+    {<span class="st">"id"</span>:<span class="nm">1</span>, <span class="st">"active"</span>:<span class="kw">False</span>},
+    {<span class="st">"id"</span>:<span class="nm">2</span>, <span class="st">"active"</span>:<span class="kw">True</span>},
+    {<span class="st">"id"</span>:<span class="nm">3</span>, <span class="st">"active"</span>:<span class="kw">True</span>},
+]
+<span class="cm"># First active user without loop</span>
+<span class="nm">first</span> = <span class="fn">next</span>(
+    (u <span class="kw">for</span> u <span class="kw">in</span> users <span class="kw">if</span> u[<span class="st">"active"</span>]), <span class="kw">None</span>
+)
+<span class="fn">print</span>(first[<span class="st">"id"</span>])</pre></td>
+          <td><div class="output-block">2</div></td>
+          <td class="usecase"><strong>Search optimization:</strong> Pehla match milte hi ruk jaao — poori list iterate mat karo. First available slot, first error in log, first qualifying record.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ======================== OOP ======================== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">🧠</div>
+    <span class="section-title">OOP / Object Functions</span>
+    <span class="section-count">6 functions</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-fn">Function</th>
+          <th class="col-def">In-depth Definition</th>
+          <th class="col-ex">Advanced Example</th>
+          <th class="col-out">Output</th>
+          <th class="col-uc">Real-world Use Case</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="fn-name">type()</span></td>
+          <td class="def-text">Object ka <strong>class/type return karta hai</strong>. 3-argument form mein <strong>nayi class dynamically create karta hai</strong> (metaclass call) — yeh bahut powerful hai. isinstance() se better nahi — subclass check nahi karta.</td>
+          <td><pre><span class="cm"># Dynamically create a model class</span>
+<span class="nm">fields</span> = {<span class="st">"__init__"</span>: <span class="kw">lambda</span> self, v: 
+          <span class="fn">setattr</span>(self, <span class="st">"val"</span>, v)}
+<span class="nm">Node</span> = <span class="fn">type</span>(<span class="st">"Node"</span>, (), fields)
+n = <span class="fn">Node</span>(<span class="nm">42</span>)
+<span class="fn">print</span>(<span class="fn">type</span>(n).__name__, n.val)</pre></td>
+          <td><div class="output-block">Node 42</div></td>
+          <td class="usecase"><strong>Metaprogramming/ORMs:</strong> Runtime mein database models banana, plugin systems, serialization frameworks jaise Django ORM mein use hota hai.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">id()</span></td>
+          <td class="def-text">Object ka <strong>unique identity (memory address) return karta hai</strong> — CPython mein actual memory address hota hai. Is or is not operator isi id ko compare karta hai. Object lifetime tak id unique rehti hai.</td>
+          <td><pre><span class="nm">a</span> = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>]
+<span class="nm">b</span> = a         <span class="cm"># same object</span>
+<span class="nm">c</span> = a.copy()  <span class="cm"># new object</span>
+<span class="fn">print</span>(<span class="fn">id</span>(a) == <span class="fn">id</span>(b))
+<span class="fn">print</span>(<span class="fn">id</span>(a) == <span class="fn">id</span>(c))
+<span class="fn">print</span>(a <span class="kw">is</span> b, a <span class="kw">is</span> c)</pre></td>
+          <td><div class="output-block">True
+False
+True False</div></td>
+          <td class="usecase"><strong>Debugging/Memory:</strong> Reference vs copy samajhna, circular reference detect karna, object caching validate karna (singleton pattern).</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">isinstance()</span></td>
+          <td class="def-text">Object <strong>kisi class ka instance hai ya nahi</strong> — inheritance chain bhi check karta hai. Tuple of types pass kar sakte ho (OR condition). type() se better hai kyunki polymorphism respect karta hai.</td>
+          <td><pre><span class="kw">from</span> numbers <span class="kw">import</span> Number
+<span class="kw">def</span> <span class="fn">safe_sqrt</span>(x):
+    <span class="kw">if not</span> <span class="fn">isinstance</span>(x, Number):
+        <span class="kw">raise</span> TypeError(<span class="nm">f</span><span class="st">"{x!r} not numeric"</span>)
+    <span class="kw">if</span> x < <span class="nm">0</span>:
+        <span class="kw">return</span> <span class="fn">complex</span>(<span class="nm">0</span>, (-x)**<span class="nm">0.5</span>)
+    <span class="kw">return</span> x**<span class="nm">0.5</span>
+<span class="fn">print</span>(<span class="fn">safe_sqrt</span>(-<span class="nm">4</span>))</pre></td>
+          <td><div class="output-block">2j</div></td>
+          <td class="usecase"><strong>Type-safe functions:</strong> Input validation, duck typing ke saath type guards, API parameter validation, plugin type checking.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">issubclass()</span></td>
+          <td class="def-text">Ek class <strong>doosri class ki subclass hai ya nahi</strong> check karta hai. isinstance() se different — yeh classes check karta hai, instances nahi. Abstract base classes ke saath powerful type hierarchy enforce karna possible hai.</td>
+          <td><pre><span class="kw">from</span> abc <span class="kw">import</span> ABC, abstractmethod
+<span class="kw">class</span> <span class="fn">Shape</span>(ABC):
+    @abstractmethod
+    <span class="kw">def</span> <span class="fn">area</span>(self): ...
+<span class="kw">class</span> <span class="fn">Circle</span>(Shape):
+    <span class="kw">def</span> <span class="fn">area</span>(self): <span class="kw">return</span> <span class="nm">3.14</span>
+<span class="fn">print</span>(<span class="fn">issubclass</span>(Circle, Shape))
+<span class="fn">print</span>(<span class="fn">issubclass</span>(int, Shape))</pre></td>
+          <td><div class="output-block">True
+False</div></td>
+          <td class="usecase"><strong>Plugin architecture:</strong> Registered plugins correct interface implement karte hain ya nahi verify karna. Framework design, ABC enforcement.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">callable()</span></td>
+          <td class="def-text">Object <strong>call kiya ja sakta hai ya nahi</strong> check karta hai — <em>__call__</em> method hai ya nahi. Functions, classes, lambdas, aur <em>__call__</em> wale objects sab callable hain. Runtime mein function existence check ke liye.</td>
+          <td><pre><span class="kw">class</span> <span class="fn">Multiplier</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, n): self.n = n
+    <span class="kw">def</span> <span class="fn">__call__</span>(self, x): <span class="kw">return</span> x * self.n
+
+<span class="nm">ops</span> = [<span class="fn">Multiplier</span>(<span class="nm">3</span>), <span class="st">"not_callable"</span>, <span class="nm">abs</span>]
+<span class="kw">for</span> op <span class="kw">in</span> ops:
+    <span class="fn">print</span>(<span class="fn">callable</span>(op), end=<span class="st">" "</span>)</pre></td>
+          <td><div class="output-block">True False True</div></td>
+          <td class="usecase"><strong>Callback systems:</strong> Event handlers valid hain ya nahi check karna. Strategy pattern mein function inject karna, middleware pipeline validate karna.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">super()</span></td>
+          <td class="def-text">Parent class ka <strong>proxy object return karta hai</strong> — Method Resolution Order (MRO) follow karta hai. Multiple inheritance mein cooperative calling possible hai. Python 3 mein arguments optional hain (zero-arg super()).</td>
+          <td><pre><span class="kw">class</span> <span class="fn">Logger</span>:
+    <span class="kw">def</span> <span class="fn">save</span>(self, d): <span class="fn">print</span>(<span class="st">"log:"</span>, d)
+<span class="kw">class</span> <span class="fn">Validator</span>(Logger):
+    <span class="kw">def</span> <span class="fn">save</span>(self, d):
+        <span class="kw">if not</span> d: <span class="kw">raise</span> ValueError
+        <span class="fn">super</span>().<span class="fn">save</span>(d)
+
+v = <span class="fn">Validator</span>()
+v.<span class="fn">save</span>({<span class="st">"x"</span>:<span class="nm">1</span>})</pre></td>
+          <td><div class="output-block">log: {'x': 1}</div></td>
+          <td class="usecase"><strong>Mixins & Django:</strong> Django views mein super().get() call karna, mixin chain mein cooperative method calls, __init__ mein parent initialization.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ======================== ATTRIBUTES ======================== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">⚙️</div>
+    <span class="section-title">Attribute Handling Functions</span>
+    <span class="section-count">4 functions</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-fn">Function</th>
+          <th class="col-def">In-depth Definition</th>
+          <th class="col-ex">Advanced Example</th>
+          <th class="col-out">Output</th>
+          <th class="col-uc">Real-world Use Case</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="fn-name">getattr()</span></td>
+          <td class="def-text">Object se <strong>named attribute ka value programmatically lena</strong>. obj.name jaisa hai, lekin attribute ka naam runtime mein string se decide hota hai. Default value dene se AttributeError avoid hota hai.</td>
+          <td><pre><span class="kw">class</span> <span class="fn">Config</span>:
+    debug = <span class="kw">True</span>
+    db_host = <span class="st">"localhost"</span>
+
+<span class="nm">cfg</span> = <span class="fn">Config</span>()
+<span class="nm">keys</span> = [<span class="st">"db_host"</span>, <span class="st">"db_port"</span>, <span class="st">"debug"</span>]
+<span class="nm">vals</span> = {k: <span class="fn">getattr</span>(cfg, k, <span class="kw">None</span>) <span class="kw">for</span> k <span class="kw">in</span> keys}
+<span class="fn">print</span>(vals)</pre></td>
+          <td><div class="output-block">{'db_host':'localhost',
+'db_port': None,
+'debug': True}</div></td>
+          <td class="usecase"><strong>Plugin/Config systems:</strong> Dynamic method dispatch, config keys loop mein read karna, serialization frameworks, API versioning.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">setattr()</span></td>
+          <td class="def-text">Object mein <strong>attribute programmatically set karta hai</strong> — obj.name = value jaisa hai. String se attribute name decide karna possible hai. __setattr__ hook trigger hota hai. Dynamic object building ke liye key function.</td>
+          <td><pre><span class="kw">class</span> <span class="fn">Model</span>: <span class="kw">pass</span>
+
+<span class="nm">row</span> = {<span class="st">"id"</span>:<span class="nm">1</span>, <span class="st">"name"</span>:<span class="st">"Zara"</span>, <span class="st">"age"</span>:<span class="nm">22</span>}
+<span class="nm">obj</span> = <span class="fn">Model</span>()
+<span class="kw">for</span> k, v <span class="kw">in</span> row.<span class="fn">items</span>():
+    <span class="fn">setattr</span>(obj, k, v)
+<span class="fn">print</span>(obj.name, obj.age)</pre></td>
+          <td><div class="output-block">Zara 22</div></td>
+          <td class="usecase"><strong>ORM/Deserialization:</strong> Dict/JSON data ko object mein map karna. Test fixture generation, dynamic model hydration.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">delattr()</span></td>
+          <td class="def-text">Object se <strong>attribute delete karta hai</strong> — del obj.attr jaisa hai. __delattr__ hook trigger hota hai. Sensitive data cleanup, cache invalidation, object state reset ke liye use hota hai.</td>
+          <td><pre><span class="kw">class</span> <span class="fn">Session</span>:
+    user = <span class="st">"admin"</span>
+    token = <span class="st">"secret_abc"</span>
+    theme = <span class="st">"dark"</span>
+
+s = <span class="fn">Session</span>()
+<span class="kw">for</span> attr <span class="kw">in</span> [<span class="st">"user"</span>, <span class="st">"token"</span>]:
+    <span class="fn">delattr</span>(s, attr)
+<span class="fn">print</span>(<span class="fn">hasattr</span>(s, <span class="st">"token"</span>))</pre></td>
+          <td><div class="output-block">False</div></td>
+          <td class="usecase"><strong>Security/Logout:</strong> Session mein sensitive data clean karna logout pe. Cache invalidation, partial object state reset karna.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">hasattr()</span></td>
+          <td class="def-text">Object mein <strong>attribute exist karta hai ya nahi check karta hai</strong> — internally getattr() try karta hai aur exception pakad leta hai. Safe attribute access ke liye use karo. Duck typing pattern mein essential hai.</td>
+          <td><pre><span class="kw">def</span> <span class="fn">serialize</span>(obj):
+    <span class="kw">if</span> <span class="fn">hasattr</span>(obj, <span class="st">"to_dict"</span>):
+        <span class="kw">return</span> obj.<span class="fn">to_dict</span>()
+    <span class="kw">elif</span> <span class="fn">hasattr</span>(obj, <span class="st">"__dict__"</span>):
+        <span class="kw">return</span> obj.__dict__
+    <span class="kw">return</span> <span class="fn">str</span>(obj)
+
+<span class="kw">class</span> <span class="fn">T</span>:
+    x = <span class="nm">5</span>
+<span class="fn">print</span>(<span class="fn">serialize</span>(<span class="fn">T</span>()))</pre></td>
+          <td><div class="output-block">{'x': 5}</div></td>
+          <td class="usecase"><strong>Generic serializers:</strong> API response build karna jab object type unknown ho. Optional interface check, feature detection in libraries.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ======================== CODE EXECUTION ======================== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">⚠️</div>
+    <span class="section-title">Code Execution Functions</span>
+    <span class="section-count">3 functions</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-fn">Function</th>
+          <th class="col-def">In-depth Definition</th>
+          <th class="col-ex">Advanced Example</th>
+          <th class="col-out">Output</th>
+          <th class="col-uc">Real-world Use Case</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="fn-name">eval()</span></td>
+          <td class="def-text"><strong>String mein expression evaluate karta hai</strong> aur result return karta hai. globals/locals dict pass karke scope control kar sakte ho. ⚠️ User input kabhi direct eval mein mat daalo — security risk hai!</td>
+          <td><pre><span class="cm"># Safe eval with restricted scope</span>
+<span class="nm">safe_env</span> = {<span class="st">"__builtins__"</span>: {}}
+<span class="nm">math_ops</span> = {<span class="st">"sqrt"</span>: <span class="kw">lambda</span> x: x**<span class="nm">0.5</span>}
+<span class="nm">expr</span> = <span class="st">"sqrt(16) + sqrt(9)"</span>
+<span class="nm">result</span> = <span class="fn">eval</span>(expr, safe_env, math_ops)
+<span class="fn">print</span>(result)</pre></td>
+          <td><div class="output-block">7.0</div></td>
+          <td class="usecase"><strong>Formula engines:</strong> Spreadsheet-like formula evaluation, config-driven calculations, DSL (Domain Specific Language) implement karna — restricted scope ke saath.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">exec()</span></td>
+          <td class="def-text">Complete Python <strong>code blocks (statements) execute karta hai</strong> — eval() sirf expressions karta hai, exec() poora program. Returns None. ⚠️ Security-sensitive! Code injection ka risk hota hai user input se.</td>
+          <td><pre><span class="cm"># Dynamic function generation</span>
+<span class="nm">func_code</span> = <span class="st">"""
+def greet(name):
+    return f"Namaste, {name}!"
+"""</span>
+<span class="nm">namespace</span> = {}
+<span class="fn">exec</span>(func_code, namespace)
+<span class="fn">print</span>(namespace[<span class="st">"greet"</span>](<span class="st">"Arjun"</span>))</pre></td>
+          <td><div class="output-block">Namaste, Arjun!</div></td>
+          <td class="usecase"><strong>Code generators:</strong> Template-based code generation, REPL/notebook environments, runtime function synthesis, test fixture auto-generation.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">compile()</span></td>
+          <td class="def-text">Source code string ko <strong>bytecode object mein compile karta hai</strong> — bina execute kiye. Ye bytecode phir eval/exec mein use hota hai. Ek baar compile, baar baar execute — performance better hoti hai.</td>
+          <td><pre><span class="nm">code_str</span> = <span class="st">"""
+result = sum(x**2 for x in range(n))
+"""</span>
+<span class="nm">bytecode</span> = <span class="fn">compile</span>(code_str, <span class="st">"&lt;str&gt;"</span>, <span class="st">"exec"</span>)
+<span class="nm">ctx</span> = {<span class="st">"n"</span>: <span class="nm">5</span>}
+<span class="fn">exec</span>(bytecode, ctx)
+<span class="fn">print</span>(ctx[<span class="st">"result"</span>])</pre></td>
+          <td><div class="output-block">30</div></td>
+          <td class="usecase"><strong>Template engines:</strong> Jinja2 jaisi libraries internally compile karin hain. Jupyter notebooks, linters, custom DSLs, AST manipulation.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ======================== FILE & SYSTEM ======================== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">📂</div>
+    <span class="section-title">File & System Functions</span>
+    <span class="section-count">3 functions</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-fn">Function</th>
+          <th class="col-def">In-depth Definition</th>
+          <th class="col-ex">Advanced Example</th>
+          <th class="col-out">Output</th>
+          <th class="col-uc">Real-world Use Case</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="fn-name">open()</span></td>
+          <td class="def-text">File ko open karke <strong>file object return karta hai</strong>. Mode: r(read), w(write), a(append), b(binary), +(update). Context manager (with) ke saath use karo — auto close hota hai. Encoding parameter important hai Unicode ke liye.</td>
+          <td><pre><span class="kw">import</span> json
+<span class="nm">data</span> = {<span class="st">"users"</span>: [<span class="st">"Rahul"</span>, <span class="st">"Priya"</span>]}
+<span class="kw">with</span> <span class="fn">open</span>(<span class="st">"data.json"</span>, <span class="st">"w"</span>, 
+            encoding=<span class="st">"utf-8"</span>) <span class="kw">as</span> f:
+    json.<span class="fn">dump</span>(data, f, indent=<span class="nm">2</span>)
+<span class="kw">with</span> <span class="fn">open</span>(<span class="st">"data.json"</span>) <span class="kw">as</span> f:
+    <span class="fn">print</span>(json.<span class="fn">load</span>(f)[<span class="st">"users"</span>][<span class="nm">0</span>])</pre></td>
+          <td><div class="output-block">Rahul</div></td>
+          <td class="usecase"><strong>Data pipelines:</strong> Config files read/write, CSV/JSON data persist karna, log files write karna, binary files (images, PDFs) process karna.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">input()</span></td>
+          <td class="def-text">User se <strong>stdin se string input leta hai</strong> — newline strip karta hai. Production code mein rarely use hota hai — CLI tools aur scripts mein hota hai. EOF pe EOFError raise hota hai.</td>
+          <td><pre><span class="kw">import</span> sys
+<span class="kw">def</span> <span class="fn">safe_int_input</span>(prompt, default=<span class="nm">0</span>):
+    <span class="kw">try</span>:
+        <span class="kw">return</span> <span class="fn">int</span>(<span class="fn">input</span>(prompt) <span class="kw">or</span> default)
+    <span class="kw">except</span> (ValueError, EOFError):
+        <span class="kw">return</span> default
+
+<span class="cm"># Simulated input for demo:</span>
+<span class="fn">print</span>(<span class="fn">int</span>(<span class="st">"25"</span> <span class="kw">or</span> <span class="nm">0</span>))  <span class="cm"># same logic</span></pre></td>
+          <td><div class="output-block">25</div></td>
+          <td class="usecase"><strong>CLI tools:</strong> Interactive scripts, setup wizards, configuration prompts. pytest/unittest mein mock karke test karna. Shell scripts ka Python alternative.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">print()</span></td>
+          <td class="def-text">Objects ko <strong>stdout pe write karta hai</strong>. sep, end, file, flush parameters hain — sirf basic printing nahi, ek flexible output function hai. file=sys.stderr se errors print kar sakte ho.</td>
+          <td><pre><span class="kw">import</span> sys, time
+<span class="nm">tasks</span> = [<span class="st">"Fetching"</span>, <span class="st">"Processing"</span>, <span class="st">"Saving"</span>]
+<span class="kw">for</span> i, t <span class="kw">in</span> <span class="fn">enumerate</span>(tasks, <span class="nm">1</span>):
+    <span class="fn">print</span>(<span class="nm">f</span><span class="st">"\r[{i}/{len(tasks)}] {t}..."</span>,
+          end=<span class="st">""</span>, flush=<span class="kw">True</span>)
+<span class="fn">print</span>(<span class="st">"\nDone!"</span>)
+<span class="fn">print</span>(<span class="st">"ERR"</span>, file=sys.stderr)</pre></td>
+          <td><div class="output-block">[3/3] Saving...
+Done!</div></td>
+          <td class="usecase"><strong>CLI progress:</strong> In-place progress indicators, structured error output to stderr, CSV export (print with sep=','), debug logging.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ======================== ADVANCED TYPES ======================== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">🧩</div>
+    <span class="section-title">Advanced Types</span>
+    <span class="section-count">5 functions</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-fn">Function</th>
+          <th class="col-def">In-depth Definition</th>
+          <th class="col-ex">Advanced Example</th>
+          <th class="col-out">Output</th>
+          <th class="col-uc">Real-world Use Case</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="fn-name">bytes()</span></td>
+          <td class="def-text"><strong>Immutable byte sequence</strong> banata hai (0-255 values). String se convert karne ke liye encoding specify karna zaroori hai. Network communication aur file I/O mein fundamental. Slice karo toh bhi bytes milte hain.</td>
+          <td><pre><span class="cm"># Simple XOR encryption</span>
+<span class="nm">msg</span> = <span class="fn">bytes</span>(<span class="st">"Hello"</span>, <span class="st">"utf-8"</span>)
+<span class="nm">key</span> = <span class="nm">0x42</span>
+<span class="nm">enc</span> = <span class="fn">bytes</span>(b ^ key <span class="kw">for</span> b <span class="kw">in</span> msg)
+<span class="nm">dec</span> = <span class="fn">bytes</span>(b ^ key <span class="kw">for</span> b <span class="kw">in</span> enc)
+<span class="fn">print</span>(enc.<span class="fn">hex</span>(), dec)</pre></td>
+          <td><div class="output-block">0a272d2d2d
+b'Hello'</div></td>
+          <td class="usecase"><strong>Networking/Crypto:</strong> TCP packets send karna, file binary read, JWT tokens, image data handle karna, protocol buffers.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">bytearray()</span></td>
+          <td class="def-text">bytes() jaisa lekin <strong>mutable</strong> hai — in-place modify kar sakte ho. Jab bada binary data modify karna ho aur copy nahi banana toh use karo. Buffer protocol support karta hai.</td>
+          <td><pre><span class="cm"># In-place image channel swap BGR→RGB</span>
+<span class="nm">pixel</span> = <span class="fn">bytearray</span>([<span class="nm">255</span>, <span class="nm">128</span>, <span class="nm">0</span>])  <span class="cm"># BGR</span>
+pixel[<span class="nm">0</span>], pixel[<span class="nm">2</span>] = pixel[<span class="nm">2</span>], pixel[<span class="nm">0</span>]
+<span class="fn">print</span>(<span class="fn">list</span>(pixel))  <span class="cm"># RGB</span></pre></td>
+          <td><div class="output-block">[0, 128, 255]</div></td>
+          <td class="usecase"><strong>Image processing:</strong> OpenCV BGR to RGB in-place convert, network buffer reuse, serial port communication, binary protocol implementation.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">memoryview()</span></td>
+          <td class="def-text">Buffer object ka <strong>zero-copy view banata hai</strong> — data copy kiye bina large bytes/bytearray ke portions access kar sakte ho. Slicing pe copy nahi hoti — isliye performance-critical code mein use hota hai.</td>
+          <td><pre><span class="nm">data</span> = <span class="fn">bytearray</span>(<span class="fn">range</span>(<span class="nm">256</span>))
+<span class="nm">mv</span>   = <span class="fn">memoryview</span>(data)
+<span class="cm"># No copy — just a view of bytes 10-20</span>
+<span class="nm">chunk</span> = mv[<span class="nm">10</span>:<span class="nm">15</span>]
+<span class="fn">print</span>(<span class="fn">list</span>(chunk))
+<span class="fn">print</span>(chunk.<span class="nm">nbytes</span>)</pre></td>
+          <td><div class="output-block">[10, 11, 12, 13, 14]
+5</div></td>
+          <td class="usecase"><strong>High-performance I/O:</strong> Large video/audio buffers process karna bina copy ke, socket data zero-copy parsing, scientific computing (NumPy interface).</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">frozenset()</span></td>
+          <td class="def-text">set() jaisa lekin <strong>immutable aur hashable</strong> hai — dict keys aur set elements ban sakta hai. Set operations (union, intersection) support karta hai. Constant lookup tables ke liye ideal.</td>
+          <td><pre><span class="nm">RESERVED_WORDS</span> = <span class="fn">frozenset</span>([
+    <span class="st">"admin"</span>, <span class="st">"root"</span>, <span class="st">"system"</span>, <span class="st">"api"</span>
+])
+<span class="nm">username_cache</span> = {}
+<span class="kw">def</span> <span class="fn">register</span>(name):
+    <span class="kw">if</span> name <span class="kw">in</span> RESERVED_WORDS:
+        <span class="kw">return</span> <span class="st">"Reserved!"</span>
+    <span class="kw">return</span> <span class="st">"OK"</span>
+<span class="fn">print</span>(<span class="fn">register</span>(<span class="st">"admin"</span>))</pre></td>
+          <td><div class="output-block">Reserved!</div></td>
+          <td class="usecase"><strong>Constant sets:</strong> Reserved keywords list, banned words, whitelist/blacklist jo change nahi honi chahiye. Dict key ke roop mein permission sets store karna.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">complex()</span></td>
+          <td class="def-text">Real + imaginary parts se <strong>complex number banata hai</strong> (a + bj form). Python mein natively supported hai. Engineering signals, FFT, electrical circuits ke calculations ke liye. abs() magnitude deta hai complex numbers ki.</td>
+          <td><pre><span class="kw">import</span> cmath
+<span class="cm"># AC circuit impedance calculation</span>
+<span class="nm">R</span> = <span class="fn">complex</span>(<span class="nm">50</span>, <span class="nm">0</span>)   <span class="cm"># Resistance</span>
+<span class="nm">XL</span> = <span class="fn">complex</span>(<span class="nm">0</span>, <span class="nm">30</span>)  <span class="cm"># Inductive</span>
+<span class="nm">Z</span> = <span class="nm">R</span> + <span class="nm">XL</span>
+<span class="fn">print</span>(<span class="nm">Z</span>, <span class="fn">abs</span>(<span class="nm">Z</span>).<span class="fn">__round__</span>(<span class="nm">2</span>))</pre></td>
+          <td><div class="output-block">(50+30j) 58.31</div></td>
+          <td class="usecase"><strong>Signal processing:</strong> FFT calculations, AC circuit analysis, quantum computing simulations, 2D rotation/transformation in graphics.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ======================== UTILITY ======================== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">🛠</div>
+    <span class="section-title">Utility Functions</span>
+    <span class="section-count">8 functions</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-fn">Function</th>
+          <th class="col-def">In-depth Definition</th>
+          <th class="col-ex">Advanced Example</th>
+          <th class="col-out">Output</th>
+          <th class="col-uc">Real-world Use Case</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="fn-name">help()</span></td>
+          <td class="def-text">Object ka <strong>docstring aur documentation interactive console mein dikhata hai</strong> — pydoc module use karta hai. REPL mein instant docs ke liye best. Functions, classes, modules — sab pe kaam karta hai.</td>
+          <td><pre><span class="cm"># Quickly check sorted() signature</span>
+<span class="fn">help</span>(<span class="nm">sorted</span>)
+<span class="cm"># Output (truncated):</span>
+<span class="cm"># sorted(iterable, /, *,</span>
+<span class="cm">#        key=None, reverse=False)</span>
+<span class="cm">#   Return a new list containing</span>
+<span class="cm">#   all items from the iterable</span></pre></td>
+          <td><div class="output-block">Help on built-in:
+sorted(iterable,
+key=None,
+reverse=False)</div></td>
+          <td class="usecase"><strong>Development:</strong> REPL mein quickly documentation check karna, apni library ke liye proper docstrings likhna, new module explore karna.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">dir()</span></td>
+          <td class="def-text">Object ke <strong>saare attributes aur methods ki sorted list return karta hai</strong>. Bina argument ke current scope ki names deta hai. Underscore se start hone wale = private/dunder. Discovery aur debugging ke liye essential.</td>
+          <td><pre><span class="nm">methods</span> = [m <span class="kw">for</span> m <span class="kw">in</span> <span class="fn">dir</span>(<span class="st">""</span>)
+           <span class="kw">if not</span> m.<span class="fn">startswith</span>(<span class="st">"_"</span>)
+           <span class="kw">and</span> m.<span class="fn">startswith</span>(<span class="st">"s"</span>)]
+<span class="fn">print</span>(methods)</pre></td>
+          <td><div class="output-block">['split', 'splitlines',
+'startswith',
+'strip', 'swapcase']</div></td>
+          <td class="usecase"><strong>Exploration/debugging:</strong> Unknown object ke methods dhundna, API discovery, plugins inspect karna, auto-complete features build karna.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">globals()</span></td>
+          <td class="def-text">Current module ka <strong>global symbol table dict return karta hai</strong> — live reference hai, copy nahi. Isme changes actual globals mein reflect hoti hain. Module-level variables, functions sab isme hain.</td>
+          <td><pre><span class="nm">CMD_A</span> = <span class="kw">lambda</span>: <span class="st">"Action A"</span>
+<span class="nm">CMD_B</span> = <span class="kw">lambda</span>: <span class="st">"Action B"</span>
+
+<span class="nm">cmd_name</span> = <span class="st">"CMD_A"</span>
+<span class="nm">fn</span> = <span class="fn">globals</span>().<span class="fn">get</span>(cmd_name)
+<span class="fn">print</span>(<span class="fn">fn</span>() <span class="kw">if</span> <span class="fn">callable</span>(fn) <span class="kw">else</span> <span class="st">"N/A"</span>)</pre></td>
+          <td><div class="output-block">Action A</div></td>
+          <td class="usecase"><strong>Command dispatch:</strong> String se function call karna (command pattern), dynamic module loading, plugin registry, test automation frameworks.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">locals()</span></td>
+          <td class="def-text">Current function ka <strong>local namespace dict return karta hai</strong>. Outer scope mein changes reflect nahi hote (unlike globals). Debugging, string formatting, template rendering mein useful. Function ke bahar globals() jaisa hota hai.</td>
+          <td><pre><span class="kw">def</span> <span class="fn">make_report</span>(name, score, rank):
+    template = (
+        <span class="st">"Student: {name}\n"</span>
+        <span class="st">"Score: {score}\nRank: {rank}"</span>
+    )
+    <span class="kw">return</span> template.<span class="fn">format</span>(**<span class="fn">locals</span>())
+
+<span class="fn">print</span>(<span class="fn">make_report</span>(<span class="st">"Anika"</span>, <span class="nm">92</span>, <span class="nm">3</span>))</pre></td>
+          <td><div class="output-block">Student: Anika
+Score: 92
+Rank: 3</div></td>
+          <td class="usecase"><strong>Template rendering:</strong> Local variables directly template mein inject karna bina manually dict banaye. Debug snapshots, SQL query builders.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">vars()</span></td>
+          <td class="def-text">Object ka <strong>__dict__ attribute return karta hai</strong> — instance variables ka dict. Bina argument ke locals() jaisa. Custom objects ko dict mein convert karne ka clean tarika. Serialization mein very useful.</td>
+          <td><pre><span class="kw">from</span> dataclasses <span class="kw">import</span> dataclass
+
+@dataclass
+<span class="kw">class</span> <span class="fn">Product</span>:
+    name: <span class="fn">str</span>
+    price: <span class="fn">float</span>
+    stock: <span class="fn">int</span>
+
+p = <span class="fn">Product</span>(<span class="st">"Laptop"</span>, <span class="nm">45999</span>, <span class="nm">10</span>)
+<span class="fn">print</span>(<span class="fn">vars</span>(p))</pre></td>
+          <td><div class="output-block">{'name': 'Laptop',
+'price': 45999,
+'stock': 10}</div></td>
+          <td class="usecase"><strong>Serialization/APIs:</strong> Dataclass/model instances ko JSON-serializable dict mein convert karna. ORM objects ko API response dict mein map karna.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">repr()</span></td>
+          <td class="def-text">Object ka <strong>unambiguous string representation return karta hai</strong> — developer ke liye (str() user ke liye hota hai). Ideally iska output Python mein paste karke same object recreate ho jaaye. Debugging mein essential.</td>
+          <td><pre><span class="kw">class</span> <span class="fn">Point</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, x, y):
+        self.x, self.y = x, y
+    <span class="kw">def</span> <span class="fn">__repr__</span>(self):
+        <span class="kw">return</span> <span class="nm">f</span><span class="st">"Point({self.x!r}, {self.y!r})"</span>
+
+pts = [<span class="fn">Point</span>(<span class="nm">1</span>,<span class="nm">2</span>), <span class="fn">Point</span>(<span class="nm">3</span>,<span class="nm">4</span>)]
+<span class="fn">print</span>(<span class="fn">repr</span>(pts))</pre></td>
+          <td><div class="output-block">[Point(1, 2),
+Point(3, 4)]</div></td>
+          <td class="usecase"><strong>Debugging/Logging:</strong> Object state clearly log karna, REPL mein informative output, test failures mein exact values dikhana.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">format()</span></td>
+          <td class="def-text">Value ko <strong>format specification ke hisaab se string mein convert karta hai</strong> — object ka <em>__format__</em> call hota hai. f-strings iske upar based hain. Number formatting, alignment, padding sab possible hai.</td>
+          <td><pre><span class="nm">data</span> = [(<span class="st">"Revenue"</span>, <span class="nm">1234567.89</span>),
+         (<span class="st">"Cost"</span>,    <span class="nm">876543.21</span>),
+         (<span class="st">"Profit"</span>,  <span class="nm">358024.68</span>)]
+<span class="kw">for</span> label, val <span class="kw">in</span> data:
+    <span class="fn">print</span>(<span class="nm">f</span><span class="st">"{label:<span class="nm">10</span>} ₹{<span class="fn">format</span>(val, ',.2f')}"</span>)</pre></td>
+          <td><div class="output-block">Revenue    ₹12,34,567.89
+Cost       ₹8,76,543.21
+Profit     ₹3,58,024.68</div></td>
+          <td class="usecase"><strong>Reports/Dashboards:</strong> Financial reports mein number formatting, table alignment, date formatting, custom __format__ implement karna.</td>
+        </tr>
+        <tr>
+          <td><span class="fn-name">slice()</span></td>
+          <td class="def-text">Slice object banata hai <strong>(start, stop, step)</strong> — reusable aur named slice define karne ke liye. a[1:5:2] internally slice(1,5,2) ban jaata hai. Custom __getitem__ mein slice objects receive kar sakte ho.</td>
+          <td><pre><span class="cm"># Named slices for CSV columns</span>
+<span class="nm">NAME</span>  = <span class="fn">slice</span>(<span class="nm">0</span>,  <span class="nm">20</span>)
+<span class="nm">AGE</span>   = <span class="fn">slice</span>(<span class="nm">20</span>, <span class="nm">23</span>)
+<span class="nm">SCORE</span> = <span class="fn">slice</span>(<span class="nm">23</span>, <span class="nm">28</span>)
+<span class="nm">row</span>   = <span class="st">"Rahul Kumar        025 095.5"</span>
+<span class="fn">print</span>(row[NAME].<span class="fn">strip</span>())
+<span class="fn">print</span>(row[AGE], row[SCORE])</pre></td>
+          <td><div class="output-block">Rahul Kumar
+025 095.5</div></td>
+          <td class="usecase"><strong>Fixed-width parsing:</strong> Legacy systems ka fixed-width data parse karna, pandas DataFrame column slices reuse karna, custom container mein slice support.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ======================== TOP 10 ======================== -->
+<div class="top10">
+  <div class="top10-title">🏆 Top 10 Functions — Interview Must-Know</div>
+  <div class="top10-subtitle">// sorted by interview frequency + practical impact</div>
+  <div class="top10-grid">
+
+    <div class="top10-card">
+      <span class="rank">#1</span>
+      <div class="top10-card-body">
+        <div class="top10-fn">sorted() + key=</div>
+        <div class="top10-reason">Almost every interview mein sorting with custom logic aata hai. <strong>Timsort, stable sort, multi-criteria sort</strong> — teeno samajhna zaroori hai.</div>
+      </div>
+    </div>
+
+    <div class="top10-card">
+      <span class="rank">#2</span>
+      <div class="top10-card-body">
+        <div class="top10-fn">enumerate()</div>
+        <div class="top10-reason">Beginner se alag dikhna hai? Loop mein manual counter mat rakho. <strong>Pythonic code</strong> ka basic sign hai ye function.</div>
+      </div>
+    </div>
+
+    <div class="top10-card">
+      <span class="rank">#3</span>
+      <div class="top10-card-body">
+        <div class="top10-fn">zip()</div>
+        <div class="top10-reason">Parallel lists, matrix transpose, dict banana — <strong>zip ke bina Python advanced nahi</strong>. Data science + web dev dono mein har jagah.</div>
+      </div>
+    </div>
+
+    <div class="top10-card">
+      <span class="rank">#4</span>
+      <div class="top10-card-body">
+        <div class="top10-fn">isinstance()</div>
+        <div class="top10-reason"><strong>Type checking + polymorphism</strong> dono. Interviews mein type-safe code likhne ka moqa milta hai — type() se better kyu hai yeh jaanna important hai.</div>
+      </div>
+    </div>
+
+    <div class="top10-card">
+      <span class="rank">#5</span>
+      <div class="top10-card-body">
+        <div class="top10-fn">map() + filter()</div>
+        <div class="top10-reason"><strong>Functional programming</strong> concepts — laziness, pipeline. Data transformation questions mein list comprehension alternative. Generator awareness dikhata hai.</div>
+      </div>
+    </div>
+
+    <div class="top10-card">
+      <span class="rank">#6</span>
+      <div class="top10-card-body">
+        <div class="top10-fn">any() + all()</div>
+        <div class="top10-reason"><strong>Short-circuit evaluation</strong> samajhna = senior-level thinking. Validation logic, condition checks — interviews mein elegant one-liners ke liye.</div>
+      </div>
+    </div>
+
+    <div class="top10-card">
+      <span class="rank">#7</span>
+      <div class="top10-card-body">
+        <div class="top10-fn">getattr() / setattr()</div>
+        <div class="top10-reason"><strong>Dynamic attribute access</strong> — OOP advanced questions, serialization, plugin systems. Bina ye jaane metaprogramming nahi samajh aayegi.</div>
+      </div>
+    </div>
+
+    <div class="top10-card">
+      <span class="rank">#8</span>
+      <div class="top10-card-body">
+        <div class="top10-fn">next() with default</div>
+        <div class="top10-reason"><strong>Generator + iterator protocol</strong> ka heart. "Find first match without full iteration" — common interview pattern. Elegant aur efficient dono.</div>
+      </div>
+    </div>
+
+    <div class="top10-card">
+      <span class="rank">#9</span>
+      <div class="top10-card-body">
+        <div class="top10-fn">type() 3-arg form</div>
+        <div class="top10-reason"><strong>Metaclass + dynamic class creation</strong> — advanced Python interviews mein poochha jaata hai. ORMs, frameworks kaise kaam karte hain iska base.</div>
+      </div>
+    </div>
+
+    <div class="top10-card">
+      <span class="rank">#10</span>
+      <div class="top10-card-body">
+        <div class="top10-fn">vars() + repr()</div>
+        <div class="top10-reason"><strong>Object introspection</strong> — serialization, debugging, logging questions. __repr__ implement karna bhi poochha jaata hai OOP design rounds mein.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<div class="footer">
+  Python Built-in Functions Master Reference &nbsp;·&nbsp; 
+  Covers 50+ functions &nbsp;·&nbsp; 
+  Interview + Exam + Production Ready
+</div>
+
+</body>
+</html>
